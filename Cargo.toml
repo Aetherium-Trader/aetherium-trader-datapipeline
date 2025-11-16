@@ -1,0 +1,36 @@
+[workspace]
+resolver = "2"
+members = [
+    "ingestion/domain",
+    "ingestion/application",
+    "ingestion/infrastructure",
+    "ingestion/bin",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Aetherium Trader Team"]
+
+[workspace.dependencies]
+# Domain layer - minimal dependencies
+chrono = { version = "0.4.42", features = ["serde"] }
+rust_decimal = { version = "1.39.0", features = ["serde"] }
+serde = { version = "1.0.228", features = ["derive"] }
+thiserror = "2.0.17"
+
+# Application layer
+async-trait = "0.1.89"
+tokio = { version = "1.48.0", features = ["full"] }
+futures = "0.3.31"
+
+# Infrastructure layer
+parquet = "57.0.0"
+arrow = "57.0.0"
+
+# DI container
+shaku = "0.6.2"
+
+# Logging
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }

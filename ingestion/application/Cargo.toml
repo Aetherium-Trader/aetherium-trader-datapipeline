@@ -1,0 +1,15 @@
+[package]
+name = "ingestion-application"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+ingestion-domain = { path = "../domain" }
+
+async-trait = { workspace = true }
+futures = { workspace = true }
+shaku = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }

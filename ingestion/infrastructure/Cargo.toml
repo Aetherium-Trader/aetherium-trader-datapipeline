@@ -1,0 +1,25 @@
+[package]
+name = "ingestion-infrastructure"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+ingestion-domain = { path = "../domain" }
+ingestion-application = { path = "../application" }
+
+async-trait = { workspace = true }
+chrono = { workspace = true }
+futures = { workspace = true }
+rust_decimal = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+
+# Parquet dependencies
+arrow = { workspace = true }
+parquet = { workspace = true }
+
+# Random data generation for mock
+rand = "0.9.2"
+
+shaku = { workspace = true }

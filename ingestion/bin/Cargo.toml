@@ -1,0 +1,29 @@
+[package]
+name = "ingestion-bin"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "ingestion"
+path = "src/main.rs"
+
+[[bin]]
+name = "ingestion-test"
+path = "src/bin/ingestion_test.rs"
+
+[[bin]]
+name = "verify-parquet"
+path = "src/bin/verify_parquet.rs"
+
+[dependencies]
+parquet = { workspace = true }
+ingestion-domain = { path = "../domain" }
+ingestion-application = { path = "../application" }
+ingestion-infrastructure = { path = "../infrastructure" }
+
+async-trait = { workspace = true }
+shaku = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }

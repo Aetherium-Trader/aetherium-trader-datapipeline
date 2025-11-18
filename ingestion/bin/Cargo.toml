@@ -16,6 +16,10 @@ path = "src/bin/ingestion_test.rs"
 name = "verify-parquet"
 path = "src/bin/verify_parquet.rs"
 
+[[bin]]
+name = "backfill"
+path = "src/bin/backfill.rs"
+
 [dependencies]
 parquet = { workspace = true }
 ingestion-domain = { path = "../domain" }
@@ -23,6 +27,8 @@ ingestion-application = { path = "../application" }
 ingestion-infrastructure = { path = "../infrastructure" }
 
 async-trait = { workspace = true }
+chrono = { workspace = true }
+clap = { workspace = true }
 shaku = { workspace = true }
 tokio = { workspace = true }
 tracing = { workspace = true }

@@ -1,8 +1,8 @@
 use ingestion_application::rate_limiter::RateLimiter;
-use ingestion_infrastructure::rate_limiter::{
+use ingestion_infrastructure::rate_limiting::limiter::{
     IbRateLimiter, IbRateLimiterConfig, IbRateLimiterParameters, RateLimitWindow,
 };
-use ingestion_infrastructure::redis_connection::RedisConnectionManager;
+use ingestion_infrastructure::rate_limiting::redis::RedisConnectionManager;
 use shaku::{module, HasComponent};
 use std::env;
 use std::sync::Arc;

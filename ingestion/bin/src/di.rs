@@ -1,17 +1,14 @@
 use ingestion_application::backfill_service::BackfillServiceImplParameters;
 use ingestion_application::services::IngestionServiceImplParameters;
 use ingestion_application::{BackfillServiceImpl, IngestionServiceImpl};
-use ingestion_infrastructure::gap_detector::ParquetGapDetectorParameters;
-use ingestion_infrastructure::gateway::MockMarketDataGatewayParameters;
-use ingestion_infrastructure::historical_gateway::MockHistoricalDataGatewayParameters;
-use ingestion_infrastructure::repository::ParquetTickRepositoryParameters;
+use ingestion_infrastructure::detectors::gap::ParquetGapDetectorParameters;
+use ingestion_infrastructure::gateways::historical::MockHistoricalDataGatewayParameters;
+use ingestion_infrastructure::gateways::market_data::MockMarketDataGatewayParameters;
+use ingestion_infrastructure::rate_limiting::redis::RedisConnectionManager;
+use ingestion_infrastructure::repositories::parquet::ParquetTickRepositoryParameters;
 use ingestion_infrastructure::{
-    IbRateLimiter,
-    MockHistoricalDataGateway,
-    MockMarketDataGateway,
-    ParquetGapDetector,
+    IbRateLimiter, MockHistoricalDataGateway, MockMarketDataGateway, ParquetGapDetector,
     ParquetTickRepository,
-    redis_connection::RedisConnectionManager
 };
 use shaku::module;
 use std::path::Path;

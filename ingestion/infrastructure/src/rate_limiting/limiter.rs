@@ -1,4 +1,4 @@
-use crate::redis_connection::RedisConnection;
+use super::redis::RedisConnection;
 use async_trait::async_trait;
 use ingestion_application::rate_limiter::{RateLimiter, RateLimiterError};
 use lazy_static::lazy_static;
@@ -14,7 +14,7 @@ use uuid::Uuid;
 
 lazy_static! {
     static ref LUA_SCRIPT: Script = {
-        const SCRIPT_SOURCE: &str = include_str!("rate_limiter.lua");
+        const SCRIPT_SOURCE: &str = include_str!("limiter.lua");
         Script::new(SCRIPT_SOURCE)
     };
 }

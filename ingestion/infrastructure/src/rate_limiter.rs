@@ -4,6 +4,9 @@ use ingestion_application::rate_limiter::{RateLimiter, RateLimiterError};
 use lazy_static::lazy_static;
 use redis::Script;
 use shaku::Component;
+use std::env;
+use std::fmt::Display;
+use std::str::FromStr;
 use std::sync::Arc;
 use std::time::Duration;
 use tracing::warn;
@@ -26,6 +29,18 @@ impl RateLimitWindow {
     pub const fn new(limit: usize, duration_secs: u64) -> Self {
         Self { limit, duration_secs }
     }
+
+    fn from_env(
+        limit_key: &str,
+        duration_key: &str,
+        default_limit: usize,
+        default_duration_secs: u64,
+    ) -> Self {
+        Self {
+            limit: read_env_or_default(limit_key, default_limit),
+            duration_secs: read_env_or_default(duration_key, default_duration_secs),
+        }
+    }
 }
 
 #[derive(Clone)]
@@ -42,12 +57,57 @@ pub struct IbRateLimiterConfig {
 
 impl Default for IbRateLimiterConfig {
     fn default() -> Self {
+        Self::from_env()
+    }
+}
+
+impl IbRateLimiterConfig {
+    pub fn from_env() -> Self {
+        const TEN_MINUTE_LIMIT_ENV: &str = "IB_RATE_LIMIT_TEN_MINUTE_LIMIT";
+        const TEN_MINUTE_DURATION_ENV: &str = "IB_RATE_LIMIT_TEN_MINUTE_SECONDS";
+        const CONTRACT_LIMIT_ENV: &str = "IB_RATE_LIMIT_CONTRACT_LIMIT";
+        const CONTRACT_DURATION_ENV: &str = "IB_RATE_LIMIT_CONTRACT_SECONDS";
+        const DUP_REQ_LIMIT_ENV: &str = "IB_RATE_LIMIT_DUPLICATE_LIMIT";
+        const DUP_REQ_DURATION_ENV: &str = "IB_RATE_LIMIT_DUPLICATE_SECONDS";
+
         Self {
-            account_id: String::from("U12345"),
-            ten_minute_window: RateLimitWindow::new(60, 600),
-            contract_window: RateLimitWindow::new(6, 2),
-            duplicate_request_window: RateLimitWindow::new(1, 15),
+            account_id: env::var("IB_ACCOUNT_ID").unwrap_or_else(|_| "U12345".to_string()),
+            ten_minute_window: RateLimitWindow::from_env(
+                TEN_MINUTE_LIMIT_ENV,
+                TEN_MINUTE_DURATION_ENV,
+                60,
+                600,
+            ),
+            contract_window: RateLimitWindow::from_env(
+                CONTRACT_LIMIT_ENV,
+                CONTRACT_DURATION_ENV,
+                6,
+                2,
+            ),
+            duplicate_request_window: RateLimitWindow::from_env(
+                DUP_REQ_LIMIT_ENV,
+                DUP_REQ_DURATION_ENV,
+                1,
+                15,
+            ),
         }
+    }
+}
+
+fn read_env_or_default<T>(key: &str, default: T) -> T
+where
+    T: Copy + FromStr + Display,
+    T::Err: Display,
+{
+    match env::var(key) {
+        Ok(val) => val.parse::<T>().unwrap_or_else(|err| {
+            warn!(
+                "Invalid value '{}' for {} ({}). Falling back to {}",
+                val, key, err, default
+            );
+            default
+        }),
+        Err(_) => default,
     }
 }
 

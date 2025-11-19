@@ -35,7 +35,13 @@ shaku = "0.6.2"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
 
+# Utilities
+lazy_static = "1.5.0"
+anyhow = "1.0.100"
+uuid = { version = "1.18.1", features = ["v4", "serde"] }
+once_cell = "1.21.3"
+
 # CLI
-clap = { version = "4.5.31", features = ["derive"] }
+clap = { version = "4.5.52", features = ["derive"] }
 rust_decimal_macros = "1.39.0"
 rand = "0.9.0"

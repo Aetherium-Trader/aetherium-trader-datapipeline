@@ -4,11 +4,14 @@ use ingestion_application::{BackfillServiceImpl, IngestionServiceImpl};
 use ingestion_infrastructure::gap_detector::ParquetGapDetectorParameters;
 use ingestion_infrastructure::gateway::MockMarketDataGatewayParameters;
 use ingestion_infrastructure::historical_gateway::MockHistoricalDataGatewayParameters;
-use ingestion_infrastructure::rate_limiter::IbRateLimiterParameters;
 use ingestion_infrastructure::repository::ParquetTickRepositoryParameters;
 use ingestion_infrastructure::{
-    IbRateLimiter, MockHistoricalDataGateway, MockMarketDataGateway, ParquetGapDetector,
+    IbRateLimiter,
+    MockHistoricalDataGateway,
+    MockMarketDataGateway,
+    ParquetGapDetector,
     ParquetTickRepository,
+    redis_connection::RedisConnectionManager
 };
 use shaku::module;
 use std::path::Path;
@@ -26,6 +29,7 @@ module! {
             MockHistoricalDataGateway,
             ParquetGapDetector,
             BackfillServiceImpl,
+            RedisConnectionManager
         ],
         providers = []
     }
@@ -47,15 +51,6 @@ pub fn create_app_module() -> AppModule {
             output_dir: output_dir.clone(),
             writer: Arc::new(Mutex::new(None)),
             current_hour: Arc::new(Mutex::new(None)),
-        })
-        .with_component_parameters::<IbRateLimiter>(IbRateLimiterParameters {
-            min_interval_secs: 15,
-            max_requests_per_short_window: 6,
-            short_window_secs: 2,
-            max_requests_per_long_window: 60,
-            long_window_secs: 600,
-            last_request: Default::default(),
-            request_history: Default::default(),
         })
         .with_component_parameters::<MockHistoricalDataGateway>(
             MockHistoricalDataGatewayParameters {

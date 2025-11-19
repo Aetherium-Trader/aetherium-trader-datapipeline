@@ -56,7 +56,10 @@ impl HistoricalDataGateway for MockHistoricalDataGateway {
             return Err(HistoricalDataError::DataNotAvailable(date));
         }
 
-        self.rate_limiter.acquire().await.expect("Rate limiter acquired");
+        self.rate_limiter
+            .acquire()
+            .await
+            .expect("Rate limiter acquired");
 
         let start_time = NaiveTime::from_hms_opt(0, 0, 0).unwrap();
         let start_datetime = date.and_time(start_time);

@@ -1,7 +1,7 @@
-pub mod tick;
-pub mod date_range;
 pub mod data_gap;
+pub mod date_range;
+pub mod tick;
 
-pub use tick::Tick;
+pub use data_gap::{detect_gaps, DataGap};
 pub use date_range::{DateRange, DateRangeError};
-pub use data_gap::{DataGap, detect_gaps};
+pub use tick::Tick;

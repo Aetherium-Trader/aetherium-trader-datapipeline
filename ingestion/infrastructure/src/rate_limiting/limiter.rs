@@ -27,7 +27,10 @@ pub struct RateLimitWindow {
 
 impl RateLimitWindow {
     pub const fn new(limit: usize, duration_secs: u64) -> Self {
-        Self { limit, duration_secs }
+        Self {
+            limit,
+            duration_secs,
+        }
     }
 
     fn from_env(

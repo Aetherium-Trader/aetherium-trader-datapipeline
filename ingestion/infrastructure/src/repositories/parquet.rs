@@ -9,10 +9,10 @@ use ingestion_domain::Tick;
 use parquet::arrow::ArrowWriter;
 use parquet::file::properties::WriterProperties;
 use rust_decimal::prelude::ToPrimitive;
+use shaku::Component;
 use std::fs::File;
 use std::path::PathBuf;
 use std::sync::Arc;
-use shaku::Component;
 use tokio::sync::Mutex;
 use tracing::{info, warn};
 

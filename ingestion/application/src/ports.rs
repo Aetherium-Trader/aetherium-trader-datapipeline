@@ -1,6 +1,6 @@
 use async_trait::async_trait;
-use shaku::Interface;
 use ingestion_domain::Tick;
+use shaku::Interface;
 
 #[async_trait]
 pub trait MarketDataGateway: Interface {

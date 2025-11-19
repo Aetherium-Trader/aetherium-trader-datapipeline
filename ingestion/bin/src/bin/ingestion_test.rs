@@ -8,8 +8,8 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilte
 #[path = "../di.rs"]
 mod di;
 
-use ingestion_application::services::IngestionService;
 use crate::di::create_app_module;
+use ingestion_application::services::IngestionService;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

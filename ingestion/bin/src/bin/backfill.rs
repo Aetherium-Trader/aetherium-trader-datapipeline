@@ -33,8 +33,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let range = ingestion_domain::DateRange::new(start_date, end_date)?;
 
-    println!("Starting backfill for {} from {} to {}",
-        cli.symbol, start_date, end_date);
+    println!(
+        "Starting backfill for {} from {} to {}",
+        cli.symbol, start_date, end_date
+    );
 
     let module = di::create_app_module();
     let service: Arc<dyn BackfillService> = module.resolve();

@@ -1,9 +1,9 @@
 use crate::ports::{MarketDataGateway, TickRepository};
+use async_trait::async_trait;
 use futures::StreamExt;
+use shaku::{Component, Interface};
 use std::sync::Arc;
 use std::time::Duration;
-use async_trait::async_trait;
-use shaku::{Component, Interface};
 use tracing::{error, info, warn};
 
 #[async_trait]

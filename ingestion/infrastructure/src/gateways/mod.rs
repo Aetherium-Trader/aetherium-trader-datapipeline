@@ -1,5 +1,5 @@
-pub mod market_data;
 pub mod historical;
+pub mod market_data;
 
-pub use market_data::MockMarketDataGateway;
 pub use historical::MockHistoricalDataGateway;
+pub use market_data::MockMarketDataGateway;

@@ -44,8 +44,8 @@ pub fn detect_gaps(
             }
             (true, Some(gap_start)) => {
                 let gap_end = date.pred_opt().expect("Date underflow");
-                let gap_range = DateRange::new(gap_start, gap_end)
-                    .expect("Gap range should be valid");
+                let gap_range =
+                    DateRange::new(gap_start, gap_end).expect("Gap range should be valid");
                 gaps.push(DataGap::new(symbol.to_string(), gap_range));
                 current_gap_start = None;
             }
@@ -99,8 +99,14 @@ mod tests {
 
         let gaps = detect_gaps("NQ", expected, &existing);
         assert_eq!(gaps.len(), 1);
-        assert_eq!(gaps[0].range().start(), NaiveDate::from_ymd_opt(2025, 1, 3).unwrap());
-        assert_eq!(gaps[0].range().end(), NaiveDate::from_ymd_opt(2025, 1, 4).unwrap());
+        assert_eq!(
+            gaps[0].range().start(),
+            NaiveDate::from_ymd_opt(2025, 1, 3).unwrap()
+        );
+        assert_eq!(
+            gaps[0].range().end(),
+            NaiveDate::from_ymd_opt(2025, 1, 4).unwrap()
+        );
     }
 
     #[test]

@@ -23,8 +23,6 @@ pub struct RedisConnectionManager {
 #[async_trait]
 impl RedisConnection for RedisConnectionManager {
     async fn get_connection(&self) -> RedisResult<MultiplexedConnection> {
-        self.client
-            .get_multiplexed_async_connection()
-            .await
+        self.client.get_multiplexed_async_connection().await
     }
 }

@@ -69,10 +69,12 @@ impl ParquetGapDetector {
 
     fn file_has_data(path: &PathBuf) -> Result<bool, GapDetectionError> {
         let file = fs::File::open(path)?;
-        let reader = SerializedFileReader::new(file)
-            .map_err(|e| GapDetectionError::IoError(
-                std::io::Error::new(std::io::ErrorKind::InvalidData, e.to_string())
-            ))?;
+        let reader = SerializedFileReader::new(file).map_err(|e| {
+            GapDetectionError::IoError(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                e.to_string(),
+            ))
+        })?;
 
         let metadata = reader.metadata();
         let num_rows: i64 = metadata.file_metadata().num_rows();

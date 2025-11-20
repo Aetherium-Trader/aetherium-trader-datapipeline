@@ -1,11 +1,9 @@
-pub mod gateway;
-pub mod repository;
-pub mod historical_gateway;
-pub mod gap_detector;
-pub mod rate_limiter;
+pub mod detectors;
+pub mod gateways;
+pub mod rate_limiting;
+pub mod repositories;
 
-pub use gateway::MockMarketDataGateway;
-pub use repository::ParquetTickRepository;
-pub use historical_gateway::MockHistoricalDataGateway;
-pub use gap_detector::ParquetGapDetector;
-pub use rate_limiter::IbRateLimiter;
+pub use detectors::ParquetGapDetector;
+pub use gateways::{MockHistoricalDataGateway, MockMarketDataGateway};
+pub use rate_limiting::{IbRateLimiter, RedisConnection};
+pub use repositories::ParquetTickRepository;

@@ -16,7 +16,10 @@ impl DateRange {
     }
 
     pub fn single_day(date: NaiveDate) -> Self {
-        Self { start: date, end: date }
+        Self {
+            start: date,
+            end: date,
+        }
     }
 
     pub fn start(&self) -> NaiveDate {
@@ -45,7 +48,8 @@ impl DateRange {
 
         while current <= self.end {
             result.push(DateRange::single_day(current));
-            current = current.checked_add_days(Days::new(1))
+            current = current
+                .checked_add_days(Days::new(1))
                 .expect("Date overflow should not happen in valid range");
         }
 
@@ -92,7 +96,13 @@ mod tests {
 
         let days = range.split_by_days();
         assert_eq!(days.len(), 3);
-        assert_eq!(days[0].start(), NaiveDate::from_ymd_opt(2025, 1, 1).unwrap());
-        assert_eq!(days[2].start(), NaiveDate::from_ymd_opt(2025, 1, 3).unwrap());
+        assert_eq!(
+            days[0].start(),
+            NaiveDate::from_ymd_opt(2025, 1, 1).unwrap()
+        );
+        assert_eq!(
+            days[2].start(),
+            NaiveDate::from_ymd_opt(2025, 1, 3).unwrap()
+        );
     }
 }

@@ -1,18 +1,12 @@
 mod di;
 
-use std::path::Path;
-use di::AppModule;
-use ingestion_application::services::{IngestionService, IngestionServiceImplParameters};
-use ingestion_application::{IngestionServiceImpl, TickRepository};
+use crate::di::create_app_module;
+use ingestion_application::services::IngestionService;
+use ingestion_application::TickRepository;
 use shaku::HasComponent;
 use std::sync::Arc;
-use tokio::sync::Mutex;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
-use ingestion_infrastructure::gateway::MockMarketDataGatewayParameters;
-use ingestion_infrastructure::{MockMarketDataGateway, ParquetTickRepository};
-use ingestion_infrastructure::repository::ParquetTickRepositoryParameters;
-use crate::di::create_app_module;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

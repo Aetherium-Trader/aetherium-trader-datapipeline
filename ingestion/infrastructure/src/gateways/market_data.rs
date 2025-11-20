@@ -5,8 +5,8 @@ use ingestion_application::ports::{GatewayError, MarketDataGateway, TickStream};
 use ingestion_domain::Tick;
 use rand::Rng;
 use rust_decimal::Decimal;
-use std::time::Duration;
 use shaku::Component;
+use std::time::Duration;
 use tracing::info;
 
 #[derive(Component)]

@@ -35,7 +35,8 @@ impl BackfillServiceImpl {
         symbol: &str,
         date: NaiveDate,
     ) -> Result<usize, BackfillError> {
-        let ticks = self.gateway
+        let ticks = self
+            .gateway
             .fetch_historical_ticks(symbol, date)
             .await
             .map_err(BackfillError::GatewayError)?;
@@ -60,7 +61,8 @@ impl BackfillService for BackfillServiceImpl {
         symbol: &str,
         range: DateRange,
     ) -> Result<BackfillReport, BackfillError> {
-        let gaps = self.gap_detector
+        let gaps = self
+            .gap_detector
             .detect_gaps(symbol, range.clone())
             .await
             .map_err(BackfillError::GapDetectionError)?;

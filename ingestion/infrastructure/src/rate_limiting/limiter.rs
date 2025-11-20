@@ -19,6 +19,8 @@ lazy_static! {
     };
 }
 
+const RATE_LIMIT_RETRY_DELAY_MS: u64 = 200;
+
 #[derive(Clone)]
 pub struct RateLimitWindow {
     pub limit: usize,
@@ -172,7 +174,7 @@ impl RateLimiter for IbRateLimiter {
                 Ok(0) => {
                     // Denied, wait and retry
                     warn!("Rate limit hit. Retrying shortly...");
-                    tokio::time::sleep(Duration::from_millis(200)).await;
+                    tokio::time::sleep(Duration::from_millis(RATE_LIMIT_RETRY_DELAY_MS)).await;
                     continue;
                 }
                 Ok(_) => {

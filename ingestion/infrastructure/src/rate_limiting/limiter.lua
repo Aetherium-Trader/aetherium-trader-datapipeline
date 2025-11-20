@@ -1,6 +1,6 @@
--- rate_limiter.lua
+-- limiter.lua
 --
--- Atomically checks and updates multiple sliding windows for rate limiting.
+-- Redis-based distributed rate limiter using a sliding window algorithm.
 --
 -- Keys:
 -- KEYS[1] = requests_zset_window_1 (e.g., 10m)

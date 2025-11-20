@@ -5,5 +5,5 @@ pub mod repositories;
 
 pub use detectors::ParquetGapDetector;
 pub use gateways::{MockHistoricalDataGateway, MockMarketDataGateway};
-pub use rate_limiting::{IbRateLimiter, IbRateLimiterConfig, RateLimitWindow, RedisConnection};
+pub use rate_limiting::{IbRateLimiter, RedisConnection};
 pub use repositories::ParquetTickRepository;

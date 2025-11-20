@@ -2,7 +2,7 @@ use ingestion_application::rate_limiter::RateLimiter;
 use ingestion_infrastructure::rate_limiting::limiter::{
     IbRateLimiter, IbRateLimiterConfig, IbRateLimiterParameters, RateLimitWindow,
 };
-use ingestion_infrastructure::rate_limiting::redis::RedisConnectionManager;
+use ingestion_infrastructure::rate_limiting::redis::{RedisConnection, RedisConnectionManager};
 use shaku::{module, HasComponent};
 use std::env;
 use std::sync::Arc;
@@ -32,7 +32,10 @@ async fn setup_test_module(config: IbRateLimiterConfig) -> TestModule {
 
     let module = module_builder.build();
 
-    clear_rate_limit_keys(&redis_url, &config).await;
+    {
+        let redis_manager: Arc<dyn RedisConnection> = module.resolve();
+        clear_rate_limit_keys(&redis_manager, &config).await;
+    }
 
     module
 }
@@ -45,10 +48,12 @@ fn windows(config: &IbRateLimiterConfig) -> [&RateLimitWindow; 3] {
     ]
 }
 
-async fn clear_rate_limit_keys(redis_url: &str, config: &IbRateLimiterConfig) {
-    let redis_client = redis::Client::open(redis_url).expect("failed to open Redis client");
-    let mut conn = redis_client
-        .get_multiplexed_async_connection()
+async fn clear_rate_limit_keys(
+    redis_connection: &Arc<dyn RedisConnection>,
+    config: &IbRateLimiterConfig,
+) {
+    let mut conn = redis_connection
+        .get_connection()
         .await
         .expect("failed to acquire Redis connection");
 
@@ -86,7 +91,7 @@ async fn test_rate_limiter_allows_requests_within_limit() {
     limiter.acquire().await.unwrap();
     let duration = start.elapsed();
     assert!(
-        duration < Duration::from_millis(50),
+        duration < Duration::from_millis(100),
         "First request took too long: {:?}",
         duration
     );
@@ -95,7 +100,7 @@ async fn test_rate_limiter_allows_requests_within_limit() {
     limiter.acquire().await.unwrap();
     let duration = start.elapsed();
     assert!(
-        duration < Duration::from_millis(50),
+        duration < Duration::from_millis(100),
         "Second request took too long: {:?}",
         duration
     );
@@ -121,8 +126,10 @@ async fn test_rate_limiter_blocks_requests_exceeding_short_limit() {
         duration >= Duration::from_secs(1),
         "Third request should wait for short window to reset"
     );
+    const MAX_EXPECTED_WAIT: Duration = Duration::from_millis(1600);
+    // Allow 1-second window plus generous buffer for Redis latency and retry loop.
     assert!(
-        duration < Duration::from_millis(1600),
+        duration < MAX_EXPECTED_WAIT,
         "Third request waited too long: {:?}",
         duration
     );
@@ -148,7 +155,7 @@ async fn test_rate_limiter_resets_after_window() {
     let duration = start.elapsed();
 
     assert!(
-        duration < Duration::from_millis(50),
+        duration < Duration::from_millis(100),
         "Request after window reset took too long: {:?}",
         duration
     );

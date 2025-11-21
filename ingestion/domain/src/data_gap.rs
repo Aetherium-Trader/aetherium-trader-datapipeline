@@ -34,7 +34,7 @@ pub fn detect_gaps(
     let mut gaps = Vec::new();
     let mut current_gap_start: Option<NaiveDate> = None;
 
-    for day in expected_range.clone().split_by_days() {
+    for day in expected_range.split_by_days() {
         let date = day.start();
         let exists = existing_dates.contains(&date);
 

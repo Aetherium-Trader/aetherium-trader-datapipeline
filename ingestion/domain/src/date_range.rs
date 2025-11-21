@@ -42,7 +42,7 @@ impl DateRange {
         self.start <= other.end && self.end >= other.start
     }
 
-    pub fn split_by_days(self) -> Vec<DateRange> {
+    pub fn split_by_days(&self) -> Vec<DateRange> {
         let mut result = Vec::new();
         let mut current = self.start;
 

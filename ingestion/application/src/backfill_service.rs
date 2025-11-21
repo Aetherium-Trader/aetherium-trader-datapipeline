@@ -304,7 +304,7 @@ fn plan_days_to_process(
     }
 
     for gap in gaps {
-        for day_range in gap.clone().split_by_days() {
+        for day_range in gap.split_by_days() {
             let date = day_range.start();
             if date < effective_start || date > range_end {
                 continue;

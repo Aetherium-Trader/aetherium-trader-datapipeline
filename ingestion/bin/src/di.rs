@@ -8,7 +8,7 @@ use ingestion_infrastructure::rate_limiting::redis::RedisConnectionManager;
 use ingestion_infrastructure::repositories::parquet::ParquetTickRepositoryParameters;
 use ingestion_infrastructure::{
     IbRateLimiter, MockHistoricalDataGateway, MockMarketDataGateway, ParquetGapDetector,
-    ParquetTickRepository,
+    ParquetTickRepository, RedisJobStateRepository,
 };
 use shaku::module;
 use std::path::Path;
@@ -26,7 +26,8 @@ module! {
             MockHistoricalDataGateway,
             ParquetGapDetector,
             BackfillServiceImpl,
-            RedisConnectionManager
+            RedisConnectionManager,
+            RedisJobStateRepository
         ],
         providers = []
     }

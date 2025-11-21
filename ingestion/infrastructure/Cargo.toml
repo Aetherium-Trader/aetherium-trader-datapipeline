@@ -31,3 +31,5 @@ lazy_static = { workspace = true }
 anyhow = { workspace = true }
 uuid = { workspace = true }
 once_cell = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }

@@ -18,3 +18,9 @@ target
 
 # Local Tick Data Output
 data/
+
+.specify/
+specs/
+
+# AI Assistant Files
+.gemini/
